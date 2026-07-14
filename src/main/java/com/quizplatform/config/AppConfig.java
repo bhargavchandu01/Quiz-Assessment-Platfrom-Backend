@@ -36,7 +36,8 @@ public class AppConfig {
         config.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",   // Vite dev server
                 "http://localhost:4173",   // Vite preview
-                "http://localhost:3000"    // fallback
+                "http://localhost:3000",   // fallback
+                "https://quiz-assessment-frontend.vercel.app" // Vercel production frontend
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList(
