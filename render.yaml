@@ -1,0 +1,31 @@
+services:
+  # 1. Private MySQL Database Service
+  - type: pserv
+    name: quiz-mysql
+    env: image
+    image: mysql:8.0
+    disk:
+      name: mysql-data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: Sairam@123
+      - key: MYSQL_DATABASE
+        value: quizdb
+
+  # 2. Spring Boot Web Service
+  - type: web
+    name: quiz-platform-backend
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://quiz-mysql:3306/quizdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - key: SPRING_DATASOURCE_USERNAME
+        value: root
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: Sairam@123
+      - key: APP_JWT_SECRET
+        generateValue: true

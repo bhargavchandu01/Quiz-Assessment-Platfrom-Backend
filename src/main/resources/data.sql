@@ -116,8 +116,8 @@ VALUES (15, 3, 'Which data structure is used for implementing BFS?',
 -- =========================================================
 -- Reset sequences so new inserts don't collide with seeded IDs
 -- =========================================================
-ALTER TABLE users     ALTER COLUMN id RESTART WITH 100;
-ALTER TABLE quizzes   ALTER COLUMN id RESTART WITH 100;
-ALTER TABLE questions ALTER COLUMN id RESTART WITH 100;
-ALTER TABLE results   ALTER COLUMN id RESTART WITH 100;
-ALTER TABLE student_answers ALTER COLUMN id RESTART WITH 100;
+ALTER TABLE users           AUTO_INCREMENT = 100;
+ALTER TABLE quizzes         AUTO_INCREMENT = 100;
+ALTER TABLE questions       AUTO_INCREMENT = 100;
+ALTER TABLE results         AUTO_INCREMENT = 100;
+ALTER TABLE student_answers AUTO_INCREMENT = 100;
