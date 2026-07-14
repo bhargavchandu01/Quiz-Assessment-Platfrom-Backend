@@ -19,17 +19,17 @@ A Spring Boot backend application for a Quiz Assessment Platform.
    ```
 
 ### Configuration
-Local configurations are located in `src/main/resources/application.properties`. By default, it expects:
-- **Host**: `localhost:3306`
-- **Database**: `quizdb`
-- **Username**: `root`
-- **Password**: `Sairam@123`
+To configure the application locally, create a `.env` file in the root directory. You can copy the template from `.env.example`:
+```bash
+cp .env.example .env
+```
 
-To run locally with different settings, you can override them via environment variables:
-- `SPRING_DATASOURCE_URL`
-- `SPRING_DATASOURCE_USERNAME`
-- `SPRING_DATASOURCE_PASSWORD`
-- `APP_JWT_SECRET`
+Open the `.env` file and set the properties to match your local setup:
+- `SPRING_DATASOURCE_URL`: JDBC URL for your local MySQL database.
+- `SPRING_DATASOURCE_USERNAME`: Your MySQL username.
+- `SPRING_DATASOURCE_PASSWORD`: Your MySQL password.
+- `ALLOWED_CORS_ORIGINS`: Comma-separated list of allowed frontend origins (e.g. `http://localhost:5173,https://quiz-assessment-frontend.vercel.app`).
+- `APP_JWT_SECRET`: A secure Base64-encoded signing key for JWT tokens.
 
 ### Execution
 Run the Spring Boot application using Maven:
@@ -73,11 +73,32 @@ This project contains a Render Blueprint configuration (`render.yaml`) that spin
 
 5. **Access Live API**:
    - Once the build succeeds, Render will provide a public URL for your web service (e.g., `https://quiz-platform-backend.onrender.com`).
-   - The H2 console is disabled in production settings (MySQL database profile).
 
 ---
 
-## 3. Database Persistence (Volumes)
-The database uses a persistent disk volume configured via `render.yaml`. If the MySQL service is restarted or rebuilt:
+## 3. How to Deploy on Railway
+
+Railway automatically detects the `Dockerfile` in the root of the project to build the Spring Boot application container.
+
+### Step-by-Step Deployment Guide
+
+1. **Create Database Service**:
+   - Create a **MySQL** database service in your Railway project dashboard.
+   - Railway will automatically provision the database and inject connection variables: `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE`.
+
+2. **Deploy Application**:
+   - Connect your GitHub repository to a new Railway Service.
+   - Railway will build and deploy the container using the root `Dockerfile`.
+
+3. **Configure Environment Variables**:
+   - In the **Variables** tab of your Spring Boot service on Railway, add:
+     - `ALLOWED_CORS_ORIGINS`: Set this to your production frontend URL (e.g. `https://quiz-assessment-frontend.vercel.app`).
+     - `APP_JWT_SECRET`: A secure Base64-encoded secret key for signing tokens.
+
+---
+
+## 4. Database Persistence (Volumes)
+The database uses a persistent disk volume configured via `render.yaml` on Render, or automated disk mounting on Railway. If the MySQL service is restarted or rebuilt:
 - The persistent disk mounted at `/var/lib/mysql` holds the database data.
 - Seeding data in `data.sql` is run when the database is empty or reinitialized.
+
